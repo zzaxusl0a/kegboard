@@ -23,6 +23,9 @@
 // Enable MagStripe reader?
 #define KB_ENABLE_MAGSTRIPE 0
 
+// Enable Weigand reader?
+#define KB_ENABLE_WEIGAND 1
+
 //
 // Pin configuration - KEGBOARD VERSION
 //
