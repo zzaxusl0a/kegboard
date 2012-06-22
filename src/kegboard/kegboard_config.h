@@ -9,16 +9,16 @@
 #define KB_ENABLE_ONEWIRE_THERMO   1
 
 // Check for & report 1-wire devices on the ID bus?
-#define KB_ENABLE_ONEWIRE_PRESENCE 1
+#define KB_ENABLE_ONEWIRE_PRESENCE 0
 
 // Enable a selftest pulse?
-#define KB_ENABLE_SELFTEST  1
+#define KB_ENABLE_SELFTEST  0
 
 // Enable buzzer?
-#define KB_ENABLE_BUZZER    1
+#define KB_ENABLE_BUZZER    0
 
 // Enable ID-12 RFID?
-#define KB_ENABLE_ID12_RFID 1
+#define KB_ENABLE_ID12_RFID 0
 
 // Enable MagStripe reader?
 #define KB_ENABLE_MAGSTRIPE 0

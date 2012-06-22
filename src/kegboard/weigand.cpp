@@ -1,21 +1,9 @@
 /*
- * HID RFID Reader Wiegand Interface for Arduino Uno
- * Written by Daniel Smith, 2012.01.30  www.pagemac.com
- * Ported to C++ and modified for kegbot by C. Niggel June 2012
- *
- *
- * This program will decode the wiegand data from a HID RFID Reader (or, theoretically,
- * any other device that outputs weigand data).
- * The Wiegand interface has two data lines, DATA0 and DATA1.  These lines are normall held
- * high at 5V.  When a 0 is sent, DATA0 drops to 0V for a few us.  When a 1 is sent, DATA1 drops
- * to 0V for a few us.  There is usually a few ms between the pulses.
- *
- * Operation is simple - each of the data lines are connected to hardware interrupt lines.  When
- * one drops low, an interrupt routine is called and some bits are flipped.  After some time of
- * of not receiving any bits, the Arduino will decode the data.  26 bit and 35 bit formats
- * are supported, but you can easily add more.
+ * Original code by Mike Cook April 2009
+ * Modified for kegbot by C. Niggel June 2011
+ * Supports an RFID reader outputing Wiegand code
  * Code is available for re-use, but please keep the attribution
-*/
+ */
 
 #include "weigand.h"
 #include <interrupt.h>
@@ -24,25 +12,25 @@ unsigned char Weigand_Card::databits[MAX_BITS];    // stores all of the data bit
 unsigned char Weigand_Card::bitCount;              // number of bits currently captured
 unsigned char Weigand_Card::flagDone;              // goes low when data is currently being captured
 unsigned int Weigand_Card::weigand_counter;        // countdown until we assume there are no more bits
- unsigned long Weigand_Card::cardCode;
+ unsigned long Weigand_Card::cardCode;   
 
 Weigand_Card::Weigand_Card() {
   //Serial.begin(57600);
   // Attach pin change interrupt service routines from the Wiegand RFID readers
-  //Serial.println("in weigandinit");
-
+  Serial.println("in weigandinit");
+  
   //initialize the reader pins
   pinMode(KB_READER_BIT0_PIN, INPUT);
   pinMode(KB_READER_BIT1_PIN, INPUT);
   //attach interrupts
   attachInterrupt(KB_INTERRUPT_BIT1, reader1One, FALLING);
   attachInterrupt(KB_INTERRUPT_BIT0, reader1Zero, FALLING);
+  
 
-
-  weigand_counter = WEIGAND_WAIT_TIME;
+  weigand_counter = WEIGAND_WAIT_TIME; 
 
   //digitalWrite(13, HIGH);  // show Arduino has finished initilisation
-
+  
 }
 
 unsigned long Weigand_Card::getdata() {
@@ -52,17 +40,17 @@ unsigned long Weigand_Card::getdata() {
  // This waits to make sure that there have been no more data pulses before processing data
   if (!flagDone) {
     if (--weigand_counter == 0)
-      flagDone = 1;
+      flagDone = 1;	
   }
-
+  
   // if we have bits and we the weigand counter went out
   if (bitCount > 0 && flagDone) {
     unsigned char i;
-
-    //Serial.print("Read ");
-    //Serial.print(bitCount);
-    //Serial.print(" bits. ");
-
+    
+    Serial.print("Read ");
+    Serial.print(bitCount);
+    Serial.print(" bits. ");
+    
     // we will decode the bits differently depending on how many bits we have
     // see www.pagemac.com/azure/data_formats.php for mor info
     if (bitCount == 35)
@@ -93,7 +81,7 @@ unsigned long Weigand_Card::getdata() {
       {
          lngCardData <<=1;
          lngCardData |= databits[i];
-      }
+      }  
     }
     else {
       // you can add other formats if you want!
@@ -103,7 +91,7 @@ unsigned long Weigand_Card::getdata() {
 
      // cleanup and get ready for the next card
      bitCount = 0;
-     for (i=0; i<MAX_BITS; i++)
+     for (i=0; i<MAX_BITS; i++) 
      {
        databits[i] = 0;
      }
@@ -112,18 +100,18 @@ unsigned long Weigand_Card::getdata() {
 }
 
 void Weigand_Card::reader1One() {
-  //Serial.print("1");
+  Serial.print("1");
   databits[bitCount] = 1;
   bitCount++;
   flagDone = 0;
-  weigand_counter = WEIGAND_WAIT_TIME;
+  weigand_counter = WEIGAND_WAIT_TIME;  
 }
 
 void Weigand_Card::reader1Zero() {
-  //Serial.print("0");
+  Serial.print("0");
   bitCount++;
   flagDone = 0;
-  weigand_counter = WEIGAND_WAIT_TIME;
-
+  weigand_counter = WEIGAND_WAIT_TIME;  
+  
 }
 
