@@ -340,11 +340,8 @@ void doTestPulse()
 #if KB_ENABLE_WEIGAND
 void stepReadWeigandCard() {
   unsigned long lngcarddata = myWeigandCard.getdata();
-  //Serial.println("instepreadweigand");
   if(lngcarddata != 0){
     writeAuthPacket("weigand",(uint8_t*)&(lngcarddata),4,1);
-    //delay(1000);
-    //writeAuthPacket("weigand",(uint8_t*)&(lngcarddata),4,0);
   }
 }
 #endif

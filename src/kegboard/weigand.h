@@ -15,6 +15,13 @@
  * of not receiving any bits, the Arduino will decode the data.  26 bit and 35 bit formats
  * are supported, but you can easily add more.
  * Code is available for re-use, but please keep the attribution
+ *
+ * Add the following declarations to the file if you need to use the weigand module alone
+ * for card testing
+ * #define KB_INT_WEIGAND_BIT0 2
+ * #define KB_INT_WEIGAND_BIT1 3
+ * #define KB_PIN_WEIGAND_BIT0 21
+ * #define KB_PIN_WEIGAND_BIT1 20
 */
 #include "Arduino.h"
 #include <HardwareSerial.h>
@@ -34,10 +41,7 @@ class Weigand_Card {
   private:
 #define MAX_BITS 100                 // max number of bits
 #define WEIGAND_WAIT_TIME  1000      // time to wait for another weigand pulse.
-#define KB_INTERRUPT_BIT0 2
-#define KB_INTERRUPT_BIT1 3
-#define KB_READER_BIT0_PIN 21
-#define KB_READER_BIT1_PIN 20
+
 
 static unsigned char databits[MAX_BITS];    // stores all of the data bits
 static unsigned char bitCount;              // number of bits currently captured

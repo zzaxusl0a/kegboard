@@ -24,7 +24,7 @@
 #define KB_ENABLE_MAGSTRIPE 0
 
 // Enable Weigand reader?
-#define KB_ENABLE_WEIGAND 1
+#define KB_ENABLE_WEIGAND 0
 
 //
 // Pin configuration - KEGBOARD VERSION
@@ -80,17 +80,28 @@
 #define KB_PIN_MAGSTRIPE_CARD_PRESENT A5
 
 // Atmega1280 (aka Arduino mega) section
-//#ifdef __AVR_ATmega1280__
-//#define KB_ATMEGA_1280            1
-//#define KB_NUM_METERS             6
+#ifdef __AVR_ATmega1280__
+#define KB_ATMEGA_1280            1
+#define KB_NUM_METERS             6
 
-//#define KB_PIN_METER_C            21
-//#define KB_PIN_METER_D            20
-//#define KB_PIN_METER_E            19
-//#define KB_PIN_METER_F            18
-//#else
+#define KB_PIN_METER_C            21
+#define KB_PIN_METER_D            20
+#define KB_PIN_METER_E            19
+#define KB_PIN_METER_F            18
+#else
 #define KB_NUM_METERS             2
-//#endif
+#endif
+
+// If enabling a Weigand reader, we need two of the interrupt pins
+// on the Arduino Mega. So, reducing KB_NUM_METERS to 2
+// You can move the reader pins by adjusting the interrupt values
+// and pin values here
+#if KB_ENABLE_WEIGAND
+#define KB_INT_WEIGAND_BIT0 2
+#define KB_INT_WEIGAND_BIT1 3
+#define KB_PIN_WEIGAND_BIT0 21
+#define KB_PIN_WEIGAND_BIT1 20
+#endif
 
 //
 // Device configuration defaults
