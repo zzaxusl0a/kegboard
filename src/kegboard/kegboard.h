@@ -67,11 +67,10 @@
 #define KB_METER_UPDATE_INTERVAL_MS 100
 
 // Number of relay outputs
-#define KB_NUM_RELAY_OUTPUTS 2
-
+#define KB_NUM_RELAY_OUTPUTS 6
 // Maximum time a relay will remain enabled after a "set_output" command.  The
 // timer is reset whenenver a new "set_output" command is received.
-#define KB_RELAY_WATCHDOG_MS 5000
+#define KB_RELAY_WATCHDOG_MS 10000
 
 // RFID defines
 #define STX 0x02
